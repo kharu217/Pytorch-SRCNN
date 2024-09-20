@@ -9,7 +9,10 @@ import os
 import numpy as np
 import glob
 import random
+import matplotlib
 import matplotlib.pyplot as plt
+
+matplotlib.use('TkAgg')
 
 #out_channel numbers
 n1, n2, n3 = 128, 64, 3
@@ -28,7 +31,7 @@ stride = 14
 batch_size = 128
 epochs = 200
 
-path = "C:/Users/chris/Downloads/080289-main/080289-main/chap02/data/Data_SRCNN"
+path = "Data_SRCNN\\T91"
 
 #use cpu for training
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -37,7 +40,7 @@ class CustomDataset(Dataset) :
     def __init__(self, img_paths, input_size, output_size, stride = 14, upscale_factor = 3) :
         super(CustomDataset, self).__init__()
 
-        self.img_paths = glob.glob(img_paths + '/*.png')
+        self.img_paths = glob.glob(img_paths + '\\*.png')
         self.stride = stride
         self.upscale_factor = upscale_factor
         self.sub_lr_imgs = []
@@ -73,8 +76,8 @@ class CustomDataset(Dataset) :
                     self.sub_hr_imgs.append(sub_hr_img)
                 
         print("Finish, Created {} Sub-Images".format(len(self.sub_lr_imgs)))     
-        self.sub_lr_imgs = np.asarray(self.sub_lr_imgs)
-        self.sub_hr_imgs = np.asarray(self.sub_hr_imgs)
+        self.sub_lr_imgs = np.asarray(self.sub_lr_imgs[0])
+        self.sub_hr_imgs = np.asarray(self.sub_hr_imgs[0])
 
     def __len__(self) :
         return len(self.sub_lr_imgs)
