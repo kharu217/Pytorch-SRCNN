@@ -110,7 +110,6 @@ class SRCNN(nn.Module) :
         self.conv2 = nn.Conv2d(n1, n2, kernel_size=f2)
         self.conv3 = nn.Conv2d(n2, n3, kernel_size=f3)
         self.relu = nn.ReLU(inplace=True)
-        self.softmax = nn.Softmax(dim=2)
         
         torch.nn.init.xavier_normal_(self.conv1.weight)
         torch.nn.init.xavier_normal_(self.conv2.weight)

@@ -35,9 +35,9 @@ epochs = 50
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 path = "Data_SRCNN\\T91"
-save_path = "saved_test_model\\test_model.h5"
+save_path = r'saved_test_model\test_model.h5'
 
-model_s = SRCNN()
+model_s = SRCNN().to(device)
 model_s.load_state_dict(torch.load(save_path))
 hr_img_path = "Data_SRCNN\\T91\\t1.png"
 
@@ -87,6 +87,12 @@ srcnn_img_r = srcnn_img_r.squeeze().cpu().numpy().transpose((1,2,0))
 
 fig_r, axes_r = plt.subplots(1, 2, figsize=(10, 5))
 axes_r[0].imshow(temp_img_r)
+axes_r[0].set_title('temp')
+
 axes_r[1].imshow(srcnn_img_r)
+axes_r[1].set_title('srcnn.png')
+
+plt.imshow(srcnn_img_r)
+plt.savefig('srcnn.png')
 
 # %%

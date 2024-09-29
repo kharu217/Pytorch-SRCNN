@@ -13,7 +13,7 @@ import glob
 import random
 import matplotlib.pyplot as plt
 
-from model import SRCNN, train_dataset, train
+from model import SRCNN, train_dataset
 
 #out_channel numbers
 n1, n2, n3 = 128, 64, 3
@@ -54,7 +54,7 @@ loss_fn = nn.MSELoss()
 for i in range(epochs) :
     print("{} Epochs...".format(i + 1))
     model_t.train()
-    train(train_dataloader, model_t, loss_fn, optimizer)
+
     size = len(train_dataloader.dataset)
     
     for batch, (X, y) in enumerate(train_dataloader) :
@@ -71,9 +71,14 @@ for i in range(epochs) :
         if batch % 100 == 0 :
             loss, current = loss.item(), (batch + 1) * len(X)
             print(f"loss : {loss:>7f} [{current:>5d}/{size:>5d}]")
-        # if loss < min_loss :
-        #     torch.save(model_t, save_path)
-        #     print("new best loss")
+            if loss < min_loss :
+                min_loss = loss
+                print('new_loss_best')
+                torch.save(model_t.state_dict(), save_path)
+        if loss < min_loss :
+                min_loss = loss
+                torch.save(model_t.state_dict(), save_path)
+print(min_loss)
     
 print("Done")
 
